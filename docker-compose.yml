@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  pulsetrade-app:
+    build: .
+    container_name: pulsetrade_app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=postgres://postgres:pulsetradepass@postgres-db:5432/pulsetrade
+      - JWT_SECRET=pulsetrade_super_jwt_secret_key_8899
+      - FINNHUB_API_KEY=${FINNHUB_API_KEY}
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - pulsetrade-network
+
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: pulsetrade_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pulsetradepass
+      POSTGRES_DB: pulsetrade
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pulsetrade"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - pulsetrade-network
+
+volumes:
+  pgdata:
+
+networks:
+  pulsetrade-network:
+    driver: bridge
