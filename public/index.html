@@ -83,29 +83,51 @@
       <!-- Quick Tickers Bar -->
       <div class="hidden xl:flex items-center gap-1.5 pl-4 border-l border-slate-800/80 text-xs font-mono">
         <button onclick="switchAsset('BTC')" class="px-2 py-1 rounded-md bg-[#0e172a]/70 hover:bg-slate-800 border border-slate-800 text-amber-400 font-bold transition flex items-center gap-1.5">
-          <span>BTC</span> <span id="nav-price-BTC" class="text-white text-[11px] font-normal">$68,500</span>
+          <span>BTC</span> <span id="nav-price-BTC" class="text-white text-[11px] font-normal">--</span>
         </button>
         <button onclick="switchAsset('ETH')" class="px-2 py-1 rounded-md bg-[#0e172a]/70 hover:bg-slate-800 border border-slate-800 text-indigo-400 font-bold transition flex items-center gap-1.5">
-          <span>ETH</span> <span id="nav-price-ETH" class="text-white text-[11px] font-normal">$3,500</span>
+          <span>ETH</span> <span id="nav-price-ETH" class="text-white text-[11px] font-normal">--</span>
         </button>
         <button onclick="switchAsset('SOL')" class="px-2 py-1 rounded-md bg-[#0e172a]/70 hover:bg-slate-800 border border-slate-800 text-emerald-400 font-bold transition flex items-center gap-1.5">
-          <span>SOL</span> <span id="nav-price-SOL" class="text-white text-[11px] font-normal">$180</span>
+          <span>SOL</span> <span id="nav-price-SOL" class="text-white text-[11px] font-normal">--</span>
         </button>
-        <button onclick="switchAsset('SPY')" class="px-2 py-1 rounded-md bg-[#0e172a]/70 hover:bg-slate-800 border border-slate-800 text-sky-400 font-bold transition">SPY</button>
-        <button onclick="switchAsset('QQQ')" class="px-2 py-1 rounded-md bg-[#0e172a]/70 hover:bg-slate-800 border border-slate-800 text-sky-400 font-bold transition">QQQ</button>
-        <button onclick="switchAsset('NVDA')" class="px-2 py-1 rounded-md bg-[#0e172a]/70 hover:bg-slate-800 border border-slate-800 text-slate-300 transition">NVDA</button>
-        <button onclick="switchAsset('AAPL')" class="px-2 py-1 rounded-md bg-[#0e172a]/70 hover:bg-slate-800 border border-slate-800 text-slate-300 transition">AAPL</button>
-        <button onclick="switchAsset('PLTR')" class="px-2 py-1 rounded-md bg-[#0e172a]/70 hover:bg-slate-800 border border-slate-800 text-slate-300 transition">PLTR</button>
+        <button onclick="switchAsset('SPY')" class="px-2 py-1 rounded-md bg-[#0e172a]/70 hover:bg-slate-800 border border-slate-800 text-sky-400 font-bold transition flex items-center gap-1.5">
+          <span>SPY</span> <span id="nav-price-SPY" class="text-white text-[11px] font-normal">--</span>
+        </button>
+        <button onclick="switchAsset('QQQ')" class="px-2 py-1 rounded-md bg-[#0e172a]/70 hover:bg-slate-800 border border-slate-800 text-sky-400 font-bold transition flex items-center gap-1.5">
+          <span>QQQ</span> <span id="nav-price-QQQ" class="text-white text-[11px] font-normal">--</span>
+        </button>
+        <button onclick="switchAsset('NVDA')" class="px-2 py-1 rounded-md bg-[#0e172a]/70 hover:bg-slate-800 border border-slate-800 text-slate-300 font-bold transition flex items-center gap-1.5">
+          <span>NVDA</span> <span id="nav-price-NVDA" class="text-white text-[11px] font-normal">--</span>
+        </button>
+        <button onclick="switchAsset('AAPL')" class="px-2 py-1 rounded-md bg-[#0e172a]/70 hover:bg-slate-800 border border-slate-800 text-slate-300 font-bold transition flex items-center gap-1.5">
+          <span>AAPL</span> <span id="nav-price-AAPL" class="text-white text-[11px] font-normal">--</span>
+        </button>
+        <button onclick="switchAsset('PLTR')" class="px-2 py-1 rounded-md bg-[#0e172a]/70 hover:bg-slate-800 border border-slate-800 text-slate-300 font-bold transition flex items-center gap-1.5">
+          <span>PLTR</span> <span id="nav-price-PLTR" class="text-white text-[11px] font-normal">--</span>
+        </button>
       </div>
     </div>
 
-    <!-- Right Controls -->
+    <!-- Right Controls: Auto-Complete Search Box -->
     <div class="flex items-center gap-2.5">
-      <form onsubmit="handleUniversalSearch(event)" class="relative flex items-center">
-        <i data-lucide="search" class="w-3.5 h-3.5 text-slate-500 absolute left-2.5 pointer-events-none"></i>
-        <input id="universalSearchInput" type="text" placeholder="Lookup any stock..." class="bg-[#0b1224]/80 border border-slate-800/90 rounded-lg pl-8 pr-10 py-1.5 text-xs font-mono uppercase text-white focus:outline-none focus:border-indigo-500 w-44 md:w-60 placeholder-slate-500 transition shadow-inner" />
-        <button type="submit" class="absolute right-1 px-2 py-0.5 rounded bg-indigo-600/80 hover:bg-indigo-500 text-[10px] font-bold text-white font-mono transition">Go</button>
-      </form>
+      <div class="relative flex items-center">
+        <form onsubmit="handleUniversalSearch(event)" class="relative flex items-center">
+          <i data-lucide="search" class="w-3.5 h-3.5 text-slate-500 absolute left-2.5 pointer-events-none"></i>
+          <input 
+            id="universalSearchInput" 
+            type="text" 
+            oninput="handleSearchDropdown(this.value)" 
+            placeholder="Search stock (e.g. B, AAPL, BTC)..." 
+            autocomplete="off"
+            class="bg-[#0b1224]/80 border border-slate-800/90 rounded-lg pl-8 pr-10 py-1.5 text-xs font-mono uppercase text-white focus:outline-none focus:border-indigo-500 w-48 md:w-64 placeholder-slate-500 transition shadow-inner" 
+          />
+          <button type="submit" class="absolute right-1 px-2 py-0.5 rounded bg-indigo-600/80 hover:bg-indigo-500 text-[10px] font-bold text-white font-mono transition">Go</button>
+        </form>
+
+        <!-- Dynamic Dropdown Container -->
+        <div id="searchResultsDropdown" class="absolute left-0 top-full mt-2 w-72 md:w-80 bg-[#0b1224]/95 backdrop-blur-xl border border-slate-700/80 rounded-xl shadow-2xl z-[9999] max-h-80 overflow-y-auto divide-y divide-slate-800/80 hidden font-mono"></div>
+      </div>
 
       <div class="hidden sm:flex items-center gap-3 bg-[#0c1428]/90 border border-slate-800/80 px-3 py-1.5 rounded-lg text-xs font-mono shadow-sm">
         <div><span class="text-slate-400 text-[10px]">CASH:</span><span id="headerCash" class="font-bold text-white ml-1">$100,000.00</span></div>
@@ -261,8 +283,12 @@
                   <input id="orderPriceInput" step="any" type="number" placeholder="Enter target price" class="w-full mt-1 bg-[#070d1a] border border-slate-800 rounded-lg px-3 py-1.5 text-white font-mono focus:outline-none focus:border-indigo-500" />
                 </div>
                 <div class="grid grid-cols-2 gap-2 pt-1 font-sans">
-                  <button onclick="submitOrder('BUY')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-lg text-xs transition shadow-lg shadow-emerald-500/10">BUY</button>
-                  <button onclick="submitOrder('SELL')" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2 rounded-lg text-xs transition shadow-lg shadow-rose-500/10">SELL</button>
+                  <button onclick="submitOrder('BUY')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-lg text-xs transition shadow-lg shadow-emerald-500/10 flex items-center justify-center gap-1">
+                    <span>BUY</span> <span class="text-[10px] opacity-80">(LONG)</span>
+                  </button>
+                  <button onclick="submitOrder('SELL')" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2 rounded-lg text-xs transition shadow-lg shadow-rose-500/10 flex items-center justify-center gap-1">
+                    <span>SELL</span> <span class="text-[10px] opacity-80">(SHORT)</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -281,7 +307,7 @@
         </div>
       </section>
 
-      <!-- VIEW 2: MARKETS EXPLORER (With Top Losers & Highest Volume) -->
+      <!-- VIEW 2: MARKETS EXPLORER -->
       <section id="view-markets" class="hidden space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -291,7 +317,6 @@
           <input id="marketSearch" oninput="filterMarkets()" type="text" placeholder="Search by symbol or company name..." class="bg-panel border border-slate-800 px-3 py-1.5 rounded-lg text-xs font-mono text-white focus:outline-none w-64 placeholder-slate-500" />
         </div>
 
-        <!-- Filter Categories Tabs with Gainers, Losers, and Volume -->
         <div class="flex items-center gap-1.5 overflow-x-auto border-b border-slate-800 pb-2 text-xs font-mono">
           <button onclick="setMarketCategory('ALL')" id="mc-ALL" class="px-3 py-1 rounded-md bg-indigo-600 text-white font-bold whitespace-nowrap">All (60+)</button>
           <button onclick="setMarketCategory('GAINERS')" id="mc-GAINERS" class="px-3 py-1 rounded-md text-emerald-400 hover:text-white whitespace-nowrap font-bold">Top Gainers</button>
@@ -373,19 +398,6 @@
             <span class="text-xs font-bold text-slate-400 uppercase">Market Sentiment</span>
             <div id="dashSentiment" class="text-2xl font-bold font-mono text-emerald-400 mt-1">68 Greed</div>
             <span class="text-[10px] text-slate-500 font-mono">Fear & Greed Index</span>
-          </div>
-        </div>
-          <div class="bg-panel backdrop-blur-md border border-borderline rounded-xl p-4 shadow-xl">
-            <span class="text-xs font-bold text-slate-400 uppercase">Available Cash</span>
-            <div id="dashCash" class="text-2xl font-bold font-mono text-white mt-1">$100,000.00</div>
-          </div>
-          <div class="bg-panel backdrop-blur-md border border-borderline rounded-xl p-4 shadow-xl">
-            <span class="text-xs font-bold text-slate-400 uppercase">Invested Capital</span>
-            <div id="dashInvested" class="text-2xl font-bold font-mono text-slate-300 mt-1">$0.00</div>
-          </div>
-          <div class="bg-panel backdrop-blur-md border border-borderline rounded-xl p-4 shadow-xl">
-            <span class="text-xs font-bold text-slate-400 uppercase">Unrealized P&L</span>
-            <div id="dashUnrealized" class="text-2xl font-bold font-mono text-slate-300 mt-1">$0.00</div>
           </div>
         </div>
 
@@ -537,7 +549,7 @@
         </div>
       </section>
 
-      <!-- VIEW 9: PRICE ALERTS (With Native Desktop Push Button) -->
+      <!-- VIEW 9: PRICE ALERTS -->
       <section id="view-alerts" class="hidden space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -592,7 +604,6 @@
           <p class="text-xs text-slate-400">Institutional session parameters and paper terminal controls.</p>
         </div>
 
-        <!-- Dedicated User Profile Card -->
         <div class="bg-panel backdrop-blur-md border border-borderline rounded-xl p-5 space-y-4 max-w-2xl shadow-xl">
           <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
             <div class="flex items-center gap-3">
@@ -609,7 +620,6 @@
             </span>
           </div>
 
-          <!-- Session Token with Copy -->
           <div class="space-y-1 font-mono text-xs">
             <div class="flex items-center justify-between text-slate-400 text-[11px]">
               <span>API Session Token</span>
@@ -620,7 +630,6 @@
             <input id="sessionTokenInput" readonly value="GUEST_ACTIVE_SESSION" class="w-full bg-[#070d1a] border border-slate-800 rounded px-2.5 py-1.5 text-[11px] text-slate-300 font-mono overflow-x-auto select-all" />
           </div>
 
-          <!-- Change Password Security Box -->
           <div class="pt-2 border-t border-slate-800/80">
             <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-2 font-mono">Change Password</h4>
             <form onsubmit="handlePasswordChange(event)" class="space-y-2 font-mono text-xs">
@@ -635,7 +644,6 @@
           </div>
         </div>
 
-        <!-- Audio Settings -->
         <div class="bg-panel backdrop-blur-md border border-borderline rounded-xl p-5 space-y-4 max-w-2xl shadow-xl">
           <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-widest font-mono">Audio Settings</h3>
           <div class="flex items-center justify-between font-mono text-xs">
@@ -647,7 +655,6 @@
           </div>
         </div>
 
-        <!-- Reset Portfolio -->
         <div class="bg-panel backdrop-blur-md border border-rose-900/40 rounded-xl p-5 space-y-4 max-w-2xl shadow-xl">
           <h3 class="text-xs font-bold text-rose-400 uppercase tracking-widest font-mono">Reset Paper Portfolio</h3>
           <p class="text-xs text-slate-400 leading-relaxed font-mono">
@@ -727,8 +734,13 @@
       indicators: { ema20: false, ema50: false, bb: false }
     };
 
-    // 60+ Asset Universe with Realistic Volume Ratings
     const assetsCatalog = [
+      { sym: 'EUR/USD', name: 'Euro / US Dollar', cat: 'FOREX', price: 1.0852, chg: '+0.15%', vol: '$124.5B', volNum: 124500000000 },
+      { sym: 'GBP/USD', name: 'British Pound / USD', cat: 'FOREX', price: 1.2984, chg: '+0.22%', vol: '$82.1B', volNum: 82100000000 },
+      { sym: 'USD/JPY', name: 'USD / Japanese Yen', cat: 'FOREX', price: 153.85, chg: '-0.18%', vol: '$95.4B', volNum: 95400000000 },
+      { sym: 'AUD/USD', name: 'Australian Dollar / USD', cat: 'FOREX', price: 0.6582, chg: '-0.05%', vol: '$42.8B', volNum: 42800000000 },
+      { sym: 'USD/CAD', name: 'USD / Canadian Dollar', cat: 'FOREX', price: 1.3854, chg: '+0.08%', vol: '$38.2B', volNum: 38200000000 },
+      { sym: 'USD/CHF', name: 'USD / Swiss Franc', cat: 'FOREX', price: 0.8842, chg: '+0.03%', vol: '$28.9B', volNum: 28900000000 },
       { sym: 'SPY', name: 'SPDR S&P 500 ETF', cat: 'ETF', price: 575.20, chg: '+0.6%', vol: '62.4M', volNum: 62400000 },
       { sym: 'QQQ', name: 'Invesco QQQ (Nasdaq 100)', cat: 'ETF', price: 485.40, chg: '+1.1%', vol: '48.1M', volNum: 48100000 },
       { sym: 'IWM', name: 'iShares Russell 2000 ETF', cat: 'ETF', price: 220.50, chg: '+1.4%', vol: '29.3M', volNum: 29300000 },
@@ -807,7 +819,7 @@
     let equityLineChart = null;
     let ws = null;
 
-    // Toast Engine
+    // Toast Notification Engine
     function showToast(title, message, type = 'info') {
       const container = document.getElementById('toastContainer');
       const el = document.createElement('div');
@@ -873,12 +885,11 @@
       }
     }
 
-    // US Market Regular Hours Tracker (9:30 AM – 4:00 PM EST, Mon-Fri)
+    // US Market Regular Hours Tracker
     function updateMarketHoursStatus() {
       const now = new Date();
       const day = now.getUTCDay();
       const utcMins = now.getUTCHours() * 60 + now.getUTCMinutes();
-      // 9:30 AM EST = 14:30 UTC = 870 mins; 4:00 PM EST = 21:00 UTC = 1260 mins
       const isUSOpen = day >= 1 && day <= 5 && utcMins >= 870 && utcMins < 1260;
 
       const dot = document.getElementById('marketStatusDot');
@@ -935,29 +946,127 @@
       if (viewId === 'news') fetchNews();
     }
 
+    // Live Auto-Complete Search Dropdown
+    function handleSearchDropdown(query) {
+      const dropdown = document.getElementById('searchResultsDropdown');
+      const q = query.trim().toUpperCase();
+
+      if (!q) {
+        dropdown.classList.add('hidden');
+        dropdown.innerHTML = '';
+        return;
+      }
+
+      // 1. Matches starting with query
+      const startsWithSymbol = assetsCatalog.filter(a => a.sym.startsWith(q));
+      const startsWithName = assetsCatalog.filter(a => !a.sym.startsWith(q) && a.name.toUpperCase().startsWith(q));
+      const contains = assetsCatalog.filter(a => !a.sym.startsWith(q) && !a.name.toUpperCase().startsWith(q) && (a.sym.includes(q) || a.name.toUpperCase().includes(q)));
+
+      const results = [...startsWithSymbol, ...startsWithName, ...contains].slice(0, 8);
+
+      if (results.length === 0) {
+        dropdown.innerHTML = `<div class="p-3 text-xs text-slate-500 italic">No matching symbol found in catalog for "${q}"</div>`;
+        dropdown.classList.remove('hidden');
+        return;
+      }
+
+      dropdown.innerHTML = results.map(a => {
+        const isFx = a.sym.includes('/');
+        const price = state.stocks[a.sym] || a.price;
+        const decimals = isFx ? (a.sym.includes('JPY') ? 2 : 4) : 2;
+
+        return `
+          <div onclick="selectSearchAsset('${a.sym}')" class="flex items-center justify-between p-2.5 hover:bg-slate-800/60 cursor-pointer transition group">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-white text-xs group-hover:text-indigo-400 transition">${a.sym}</span>
+              <span class="text-[10px] text-slate-400 font-sans truncate max-w-[120px]">${a.name}</span>
+            </div>
+            <div class="text-right flex items-center gap-1.5">
+              <span class="text-xs font-bold text-slate-200">$${price.toFixed(decimals)}</span>
+              <span class="text-[9px] px-1 py-0.2 rounded font-sans font-bold ${a.chg.startsWith('+') ? 'bg-emerald-500/10 text-profit' : 'bg-rose-500/10 text-loss'}">
+                ${a.chg}
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      dropdown.classList.remove('hidden');
+    }
+
+    function selectSearchAsset(sym) {
+      const dropdown = document.getElementById('searchResultsDropdown');
+      if (dropdown) dropdown.classList.add('hidden');
+      document.getElementById('universalSearchInput').value = '';
+      switchAsset(sym);
+      navigate('terminal');
+    }
+
+    // Universal Search with Strict Exchange Validation
     async function handleUniversalSearch(e) {
       e.preventDefault();
       const input = document.getElementById('universalSearchInput');
       const sym = input.value.trim().toUpperCase();
+      const dropdown = document.getElementById('searchResultsDropdown');
+      if (dropdown) dropdown.classList.add('hidden');
       if (!sym) return;
 
+      // 1. STRICT FORMAT VALIDATION (Immediately blocks words like XHAMSTER, TTYYTT, PPOOIUIUYYRTR)
+      const isStockOrCrypto = /^[A-Z]{1,5}$/.test(sym);
+      const isForex = /^[A-Z]{3}\/[A-Z]{3}$/.test(sym);
+
+      if (!isStockOrCrypto && !isForex) {
+        showToast('Invalid Ticker', `"${sym}" is not a valid exchange ticker format (US stocks are 1-5 letters, Forex is EUR/USD).`, 'error');
+        input.value = '';
+        return;
+      }
+
+      // 2. Check if it exists in our pre-verified catalog
+      const existing = assetsCatalog.find(a => a.sym === sym);
+      if (existing) {
+        switchAsset(sym);
+        navigate('terminal');
+        showToast('Asset Loaded', `Opened terminal for ${sym}`, 'success');
+        input.value = '';
+        return;
+      }
+
+      // 3. Query backend to verify if it exists on real exchanges
       try {
-        const res = await fetch(`/api/quote?symbol=${sym}`);
+        const res = await fetch(`/api/quote?symbol=${encodeURIComponent(sym)}`);
         const data = await res.json();
+
+        if (!res.ok || data.error) {
+          showToast('Symbol Not Found', data.error || `Ticker "${sym}" does not exist on any global exchange.`, 'error');
+          return;
+        }
+
         if (data.price) {
           state.stocks[sym] = data.price;
-          if (ws && ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify({ action: 'subscribe', symbol: sym }));
-          }
+          assetsCatalog.push({
+            sym: sym,
+            name: sym,
+            cat: sym.includes('/') ? 'FOREX' : 'STOCKS',
+            price: data.price,
+            chg: '+0.0%'
+          });
           switchAsset(sym);
           navigate('terminal');
-          showToast('Symbol Resolved', `Loaded live stream for ${sym} @ $${data.price.toFixed(2)}`, 'success');
+          showToast('Symbol Resolved', `${sym} loaded @ $${data.price.toFixed(2)}`, 'success');
           input.value = '';
         }
       } catch (err) {
-        showToast('Lookup Error', `Could not find ticker ${sym}`, 'error');
+        showToast('Lookup Error', `Could not reach exchange for ${sym}`, 'error');
       }
     }
+
+    document.addEventListener('click', (e) => {
+      const dropdown = document.getElementById('searchResultsDropdown');
+      const input = document.getElementById('universalSearchInput');
+      if (dropdown && !dropdown.contains(e.target) && e.target !== input) {
+        dropdown.classList.add('hidden');
+      }
+    });
 
     function initCharts() {
       const c = document.getElementById('chartContainer');
@@ -991,7 +1100,7 @@
 
       macdLine = oscChart.addLineSeries({ color: '#38bdf8', lineWidth: 1.5, visible: true });
       signalLine = oscChart.addLineSeries({ color: '#f59e0b', lineWidth: 1.5, visible: true });
-      macdHistogram = oscChart.addHistogramSeries({ priceFormat: { type: 'volume' }, visible: true });
+      macdHistogram = oscChart.addHistogramSeries({ priceFormat: { type: 'volume' } });
 
       rsiSeries = oscChart.addLineSeries({ color: '#c084fc', lineWidth: 1.5, visible: false });
       rsiSeries.createPriceLine({ price: 70, color: '#ff1744', lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: '70' });
@@ -1100,14 +1209,6 @@
       return { line: lineVals, signal: sigVals.map(x => ({ time: x.time, value: x.value })), hist: histVals };
     }
 
-    function getSeededRandom(seed) {
-      let s = seed % 2147483647;
-      if (s <= 0) s += 2147483646;
-      return function() {
-        return (s = s * 16807 % 2147483647) / 2147483647;
-      };
-    }
-
     const binanceIntervalMap = {
       60: '1m', 300: '5m', 900: '15m', 1800: '30m', 3600: '1h', 14400: '4h', 86400: '1d'
     };
@@ -1116,7 +1217,7 @@
       const cacheKey = `${symbol}_${timeframe}`;
 
       if (candleCache[cacheKey] && candleCache[cacheKey].length > 0) {
-        applyCandlesToChart(candleCache[cacheKey], basePrice);
+        applyCandlesToChart(candleCache[cacheKey], state.stocks[symbol] || basePrice);
         return;
       }
 
@@ -1144,43 +1245,25 @@
               value: parseFloat(k[5]),
               color: parseFloat(k[4]) >= parseFloat(k[1]) ? 'rgba(0, 230, 118, 0.4)' : 'rgba(255, 23, 68, 0.4)'
             }));
+            state.stocks[symbol] = candles[candles.length - 1].close;
           }
-        } catch (e) {
-          console.warn('[Chart] Binance history fetch notice:', e.message);
-        }
+        } catch (e) {}
+      } else {
+        try {
+          const res = await fetch(`/api/candles?symbol=${symbol}&timeframe=${timeframe}`);
+          const data = await res.json();
+          if (data && data.candles && data.candles.length > 0) {
+            candles = data.candles;
+            volumes = data.volumes;
+            state.stocks[symbol] = data.currentPrice;
+          }
+        } catch (e) {}
       }
 
-      if (candles.length === 0) {
-        let hash = 0;
-        for (let i = 0; i < symbol.length; i++) hash = symbol.charCodeAt(i) + ((hash << 5) - hash);
-        const prng = getSeededRandom(Math.abs(hash) + timeframe * 17);
-
-        const now = Math.floor(Date.now() / 1000);
-        const slot = now - (now % timeframe);
-        const step = basePrice > 500 ? (basePrice * 0.005) : (basePrice > 50 ? 0.6 : 0.15);
-
-        let curr = basePrice;
-        for (let i = 0; i < 50; i++) {
-          const t = slot - (i * timeframe);
-          const delta = (prng() - 0.49) * step;
-          const open = +(curr - delta).toFixed(2);
-          const close = curr;
-          const high = +(Math.max(open, close) + prng() * (step * 0.4)).toFixed(2);
-          const low = +(Math.min(open, close) - prng() * (step * 0.4)).toFixed(2);
-          const vol = Math.floor(prng() * 80) + 10;
-
-          candles.unshift({ time: t, open, high, low, close });
-          volumes.unshift({
-            time: t,
-            value: vol,
-            color: close >= open ? 'rgba(0, 230, 118, 0.4)' : 'rgba(255, 23, 68, 0.4)'
-          });
-          curr = open;
-        }
+      if (candles.length > 0) {
+        candleCache[cacheKey] = candles;
+        applyCandlesToChart(candles, state.stocks[symbol] || basePrice, volumes);
       }
-
-      candleCache[cacheKey] = candles;
-      applyCandlesToChart(candles, basePrice, volumes);
     }
 
     function applyCandlesToChart(candles, basePrice, volumesData) {
@@ -1296,9 +1379,17 @@
     }
 
     function updateTick(sym, newPrice) {
+      const oldPrice = state.stocks[sym] || newPrice;
       state.stocks[sym] = newPrice;
+
+      const navEl = document.getElementById(`nav-price-${sym}`);
+      if (navEl) {
+        navEl.innerText = `$${newPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        navEl.className = `text-[11px] font-normal transition ${newPrice >= oldPrice ? 'text-profit' : 'text-loss'}`;
+      }
+
       if (state.activeSymbol === sym) {
-        document.getElementById('chartPrice').innerText = `$${newPrice.toFixed(2)}`;
+        document.getElementById('chartPrice').innerText = `$${newPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         const now = Math.floor(Date.now() / 1000);
         const slot = now - (now % state.timeframe);
 
@@ -1388,7 +1479,7 @@
       const token = localStorage.getItem('pt_token');
       const res = await fetch('/api/portfolio', { headers: { 'Authorization': `Bearer ${token || ''}` } });
       const d = await res.json();
-      // Fetch Live Market Sentiment
+
       fetch('/api/sentiment').then(r => r.json()).then(s => {
         const sentEl = document.getElementById('dashSentiment');
         if (sentEl) {
@@ -1406,18 +1497,29 @@
 
       renderAllocation(d.cash_balance, d.positions);
 
-      document.getElementById('fullPositionsList').innerHTML = d.positions.map(p => `
-        <tr class="hover:bg-slate-800/20">
-          <td class="py-2.5 px-4 font-bold text-white">${p.symbol}</td>
-          <td class="py-2.5 px-4 text-right">${p.quantity.toFixed(4)}</td>
-          <td class="py-2.5 px-4 text-right">$${p.average_entry_price.toFixed(2)}</td>
-          <td class="py-2.5 px-4 text-right">$${p.current_price.toFixed(2)}</td>
-          <td class="py-2.5 px-4 text-right">$${p.market_value.toFixed(2)}</td>
-          <td class="py-2.5 px-4 text-right font-bold ${p.unrealized_pnl >= 0 ? 'text-profit' : 'text-loss'}">
-            ${p.unrealized_pnl >= 0 ? '+' : ''}$${p.unrealized_pnl.toFixed(2)}
-          </td>
-        </tr>
-      `).join('') || '<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">No open positions</td></tr>';
+      document.getElementById('fullPositionsList').innerHTML = d.positions.map(p => {
+        const isFx = p.symbol.includes('/');
+        const isShort = p.side === 'SELL';
+        const decimals = isFx ? (p.symbol.includes('JPY') ? 2 : 4) : 2;
+
+        return `
+          <tr class="hover:bg-slate-800/20">
+            <td class="py-2.5 px-4 font-bold text-white flex items-center gap-1.5">
+              <span>${p.symbol}</span>
+              <span class="text-[10px] font-mono px-1 rounded font-bold ${isShort ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'}">
+                ${isShort ? 'SHORT' : 'LONG'}
+              </span>
+            </td>
+            <td class="py-2.5 px-4 text-right">${p.quantity.toFixed(isFx ? 0 : 4)}</td>
+            <td class="py-2.5 px-4 text-right">$${p.average_entry_price.toFixed(decimals)}</td>
+            <td class="py-2.5 px-4 text-right">$${p.current_price.toFixed(decimals)}</td>
+            <td class="py-2.5 px-4 text-right">$${p.market_value.toFixed(2)}</td>
+            <td class="py-2.5 px-4 text-right font-bold ${p.unrealized_pnl >= 0 ? 'text-profit' : 'text-loss'}">
+              ${p.unrealized_pnl >= 0 ? '+' : ''}$${p.unrealized_pnl.toFixed(2)}
+            </td>
+          </tr>
+        `;
+      }).join('') || '<tr><td colspan="6" class="p-4 text-center text-slate-500 italic">No open positions</td></tr>';
     }
 
     function renderAllocation(cash, positions) {
@@ -1435,7 +1537,6 @@
       });
     }
 
-    // Markets Explorer Filter (Gainers, Losers, and Volume)
     function setMarketCategory(cat) {
       state.marketCategory = cat;
       ['ALL', 'GAINERS', 'LOSERS', 'VOLUME', 'TECH', 'FINANCE', 'CONSUMER', 'HEALTH', 'ETF', 'CRYPTO'].forEach(c => {

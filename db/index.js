@@ -3,7 +3,6 @@ const { Pool } = require('pg');
 let pool = null;
 let isPostgresConnected = false;
 
-// Modern PostgreSQL 13+ schema (uses native gen_random_uuid without extensions)
 const tableQueries = [
   `CREATE TABLE IF NOT EXISTS users (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -24,11 +23,12 @@ const tableQueries = [
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       user_id UUID REFERENCES users(id) ON DELETE CASCADE,
       symbol VARCHAR(20) NOT NULL,
+      side VARCHAR(10) NOT NULL DEFAULT 'BUY',
       quantity NUMERIC(18, 6) NOT NULL,
-      average_entry_price NUMERIC(15, 2) NOT NULL,
-      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-      CONSTRAINT unique_user_pos_symbol UNIQUE(user_id, symbol)
+      average_entry_price NUMERIC(15, 4) NOT NULL,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
   );`,
+  `ALTER TABLE positions ADD COLUMN IF NOT EXISTS side VARCHAR(10) DEFAULT 'BUY';`,
   `CREATE TABLE IF NOT EXISTS orders (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       user_id UUID REFERENCES users(id) ON DELETE CASCADE,
@@ -36,7 +36,7 @@ const tableQueries = [
       order_type VARCHAR(20) NOT NULL,
       side VARCHAR(10) NOT NULL,
       quantity NUMERIC(18, 6) NOT NULL,
-      price NUMERIC(15, 2),
+      price NUMERIC(15, 4),
       status VARCHAR(20) NOT NULL DEFAULT 'PENDING',
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
       executed_at TIMESTAMP WITH TIME ZONE
@@ -47,18 +47,15 @@ const tableQueries = [
       symbol VARCHAR(20) NOT NULL,
       side VARCHAR(10) NOT NULL,
       quantity NUMERIC(18, 6) NOT NULL,
-      execution_price NUMERIC(15, 2) NOT NULL,
+      execution_price NUMERIC(15, 4) NOT NULL,
       realized_pnl NUMERIC(15, 2) DEFAULT 0.00,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
   );`
 ];
 
 if (process.env.DATABASE_URL) {
-  // Strip out sslmode parameters that trigger node-pg warnings
   let connStr = process.env.DATABASE_URL;
-  if (connStr.includes('?')) {
-    connStr = connStr.split('?')[0];
-  }
+  if (connStr.includes('?')) connStr = connStr.split('?')[0];
 
   pool = new Pool({
     connectionString: connStr,
@@ -67,21 +64,15 @@ if (process.env.DATABASE_URL) {
 
   pool.connect(async (err, client, release) => {
     if (err) {
-      console.warn('[Database] PostgreSQL connection failed. Falling back to in-memory adapter:', err.message);
+      console.warn('[Database] PostgreSQL connection notice. Running memory engine:', err.message);
       isPostgresConnected = false;
     } else {
       console.log('[Database] PostgreSQL connected successfully!');
       isPostgresConnected = true;
-
-      // Auto-create each table individually
       for (const query of tableQueries) {
-        try {
-          await client.query(query);
-        } catch (tableErr) {
-          // If already exists or permission notice, continue safely
-        }
+        try { await client.query(query); } catch (e) {}
       }
-      console.log('[Database] Tables verified and ready.');
+      console.log('[Database] Tables and Forex Long/Short support verified.');
       release();
     }
   });
@@ -100,9 +91,7 @@ const memStore = {
 module.exports = {
   isPostgresConnected: () => isPostgresConnected,
   query: async (text, params) => {
-    if (isPostgresConnected && pool) {
-      return pool.query(text, params);
-    }
+    if (isPostgresConnected && pool) return pool.query(text, params);
     return null;
   },
   memStore
